@@ -3,10 +3,9 @@
 namespace Ivory\CKEditorBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormViewInterface;
+use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * CKEditor type
@@ -18,30 +17,41 @@ class CKEditorType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilder $builder, array $options)
     {
         $builder
             ->setAttribute('toolbar', $options['toolbar'])
-            ->setAttribute('ui_color', $options['ui_color']);
+            ->setAttribute('ui_color', $options['ui_color'])
+            ->setAttribute('skin', $options['skin'])
+            ->setAttribute('width', $options['width'])
+            ->setAttribute('extraPlugins', $options['extraPlugins'])
+        ;
     }
-
+    
     /**
      * {@inheritdoc}
      */
-    public function buildView(FormViewInterface $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form)
     {
         $view
-            ->setVar('toolbar', $form->getAttribute('toolbar'))
-            ->setVar('ui_color', $form->getAttribute('ui_color'));
+            ->set('toolbar', $form->getAttribute('toolbar'))
+            ->set('ui_color', $form->getAttribute('ui_color'))
+            ->set('skin', $form->getAttribute('skin'))    
+            ->set('width', $form->getAttribute('width'))    
+            ->set('extraPlugins', $form->getAttribute('extraPlugins'))    
+        ;
     }
-
+    
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function getDefaultOptions(array $options)
     {
-        $resolver->setDefaults(array(
+        return array(
+            'skin' => 'v2',
+            'width' => '600',
             'required' => false,
+            'extraPlugins' => '',
             'toolbar' => array(
                 array(
                     'name' => 'document',
@@ -91,15 +101,25 @@ class CKEditorType extends AbstractType
                 )
             ),
             'ui_color' => null
-        ));
-
-        $resolver->addAllowedValues(array('required' => array(false)));
+        );
     }
-
+    
+    /**
+     * Returns the allowed option values for each option (if any).
+     *
+     * @param array $options
+     *
+     * @return array The allowed option values
+     */
+    public function getAllowedOptionValues(array $options)
+    {
+        return array('required' => array(false));
+    }
+    
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(array $options)
     {
         return 'textarea';
     }
