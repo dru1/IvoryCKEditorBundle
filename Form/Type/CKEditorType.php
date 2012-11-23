@@ -25,6 +25,7 @@ class CKEditorType extends AbstractType
             ->setAttribute('skin', $options['skin'])
             ->setAttribute('width', $options['width'])
             ->setAttribute('extraPlugins', $options['extraPlugins'])
+            ->setAttribute('autoParagraph', $options['autoParagraph'])
         ;
     }
     
@@ -39,6 +40,7 @@ class CKEditorType extends AbstractType
             ->set('skin', $form->getAttribute('skin'))    
             ->set('width', $form->getAttribute('width'))    
             ->set('extraPlugins', $form->getAttribute('extraPlugins'))    
+            ->set('autoParagraph', $form->getAttribute('autoParagraph'))
         ;
     }
     
@@ -52,6 +54,7 @@ class CKEditorType extends AbstractType
             'width' => '600',
             'required' => false,
             'extraPlugins' => '',
+            'autoParagraph' => true,
             'toolbar' => array(
                 array(
                     'name' => 'document',
